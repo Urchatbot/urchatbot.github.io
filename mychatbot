@@ -1,0 +1,24 @@
+<?php
+// chatbot.php
+
+// Simulated message responses
+$responses = [
+    "hello" => "Hi there! How can I help you?",
+    "how are you?" => "I'm just a program, but thanks for asking!",
+    "bye" => "Goodbye! Have a great day!",
+];
+
+// Get the message from the user
+$userMessage = strtolower(trim($_POST['message'])); // Assuming a POST request
+
+// Default response
+$responseMessage = "Sorry, I didn't understand that.";
+
+// Check for a matching response
+if (array_key_exists($userMessage, $responses)) {
+    $responseMessage = $responses[$userMessage];
+}
+
+// Return the response
+echo json_encode(["response" => $responseMessage]);
+?>

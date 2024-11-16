@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #00c6ff, #C54BB2);
+            background-image: url(science.jpeg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+    #chatContainer {
+        background-image: url(gojo2.gif); /* Image URL */
+        background-size: cover; /* Cover the entire container */
+        background-position: center; /* Center the image */
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        width: 400px;
+        max-width: 90%;
+        display: flex;
+        flex-direction: column;
+        backdrop-filter: blur(10px); /* Optional: adds a blur effect */
+    } 
+
+        #chatArea {
+            height: 500px;
+            padding: 20px;
+            border-bottom: 1px solid #ccc;
+            overflow-y: auto;
+            flex-grow: 1;
+            transition: background-color 0.3s;
+        }   
+        
+        .message {
+            margin: 10px 0;
+            padding: 12px 15px;
+            border-radius: 20px;
+            max-width: 75%;
+            position: relative;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .user {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .bot {
+            background-color: #e9ecef;
+            color: black;
+            align-self: flex-start;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 100px);
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            margin: 10px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+        }
+
+        button {
+            padding: 12px 15px;
+            border: none;
+            background-color: #4B67C5;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #C54BAF;
+            transform: translateY(-2px);
+        }
+
+        .typing-indicator {
+            color: #aaa;
+            font-style: italic;
+            margin-top: 10px;
+        }
+    </style>
+
+    <script>
+        function sendMessage() {
+            var userInput = document.getElementById('userInput').value;
+            if (!userInput) return; // Prevent empty messages
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'chatbot.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    document.getElementById('chatArea').innerHTML += "<div class='message user'>" + userInput + "</div>";
+                    document.getElementById('chatArea').innerHTML += "<div class='message bot'>" + xhr.responseText + "</div>";
+                    document.getElementById('userInput').value = ''; // Clear input
+                    document.getElementById('chatArea').scrollTop = document.getElementById('chatArea').scrollHeight; // Auto-scroll
+                }
+            };
+            xhr.send('user_input=' + encodeURIComponent(userInput));
+        }
+    </script>
+</head>
+<body>
+    <div id="chatContainer"> 
+        <div id="chatArea"></div>
+        <div style="display: flex; padding: 10px;">
+            <input type="text" id="userInput" placeholder="Type your message..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</body>
+</html>
